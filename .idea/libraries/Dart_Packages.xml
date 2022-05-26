@@ -65,13 +65,6 @@
             </list>
           </value>
         </entry>
-        <entry key="demo_template">
-          <value>
-            <list>
-              <option value="$PROJECT_DIR$/../lib" />
-            </list>
-          </value>
-        </entry>
         <entry key="dio">
           <value>
             <list>
@@ -636,7 +629,6 @@
       <root url="file://$USER_HOME$/Documents/Development/flutter/packages/flutter/lib" />
       <root url="file://$USER_HOME$/Documents/Development/flutter/packages/flutter_test/lib" />
       <root url="file://$USER_HOME$/Documents/Development/flutter/packages/flutter_web_plugins/lib" />
-      <root url="file://$PROJECT_DIR$/../lib" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
