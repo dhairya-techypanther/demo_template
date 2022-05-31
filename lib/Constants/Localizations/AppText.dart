@@ -6,6 +6,7 @@ String home = "Welcome Home".tr;
 String name = "name".tr;
 String email = "email".tr;
 String gender = "gender".tr;
+String status = "status".tr;
 String logout = "logout".tr;
 String addUser = "Add User".tr;
 String updateUser = "Update User".tr;

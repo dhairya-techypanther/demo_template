@@ -1,22 +1,21 @@
 import 'package:demo_template/Constants/Localizations/AppText.dart';
-import 'package:demo_template/Models/APIs/APIService.dart';
+import 'package:demo_template/Controller/AddUserController.dart';
+import 'package:demo_template/Controller/HomeController.dart';
+import 'package:demo_template/Models/APIs/APIMethode.dart';
 import 'package:demo_template/Models/User.dart';
-import 'package:demo_template/Routing/RouteNames.dart';
 import 'package:demo_template/UI/Styling/AppColors.dart';
-import 'package:demo_template/UI/Styling/AppIcons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class CustomSlidableWidget extends StatefulWidget {
-  // final String? sliderTitle;
   final Widget? avatarIcon;
   final User? user;
 
   const CustomSlidableWidget({
     Key? key,
-    this.avatarIcon, this.user,
+    this.avatarIcon,
+    this.user,
   }) : super(key: key);
 
   @override
@@ -25,9 +24,11 @@ class CustomSlidableWidget extends StatefulWidget {
 
 class _CustomSlidableWidgetState extends State<CustomSlidableWidget> {
 
+  final AddUserController addUserController = Get.put(AddUserController());
+  final APIMethode apiMethode = APIMethode();
   @override
   void initState() {
-    APIService.addUser(name, email, gender);
+    addUserController.addUser(name, email, gender);
     super.initState();
   }
 
@@ -41,22 +42,22 @@ class _CustomSlidableWidgetState extends State<CustomSlidableWidget> {
         shape: BoxShape.rectangle,
       ),
       child: Slidable(
-        // Specify a key if the Slidable is dismissible.
+        /// Specify a key if the Slidable is dismissible.
         key: const ValueKey(0),
 
-        // The start action pane is the one at the left or the top side.
+        /// The start action pane is the one at the left or the top side.
         startActionPane: ActionPane(
           // A motion is a widget used to control how the pane animates.
           motion: const ScrollMotion(),
 
-          // A pane can dismiss the Slidable.
+          /// A pane can dismiss the Slidable.
           dismissible: DismissiblePane(onDismissed: () {}),
 
-          // All actions are defined in the children parameter.
+          /// All actions are defined in the children parameter.
           children: [
-            // A SlidableAction can have an icon and/or a label.
+            /// A SlidableAction can have an icon and/or a label.
             SlidableAction(
-              onPressed: newUserMethod,
+              onPressed: addUserController.modifyUserMethod,
               backgroundColor: AppColor.successColor,
               foregroundColor: AppColor.whiteColor,
               icon: Icons.update,
@@ -65,14 +66,15 @@ class _CustomSlidableWidgetState extends State<CustomSlidableWidget> {
           ],
         ),
 
-        // The end action pane is the one at the right or the bottom side.
+        /// The end action pane is the one at the right or the bottom side.
         endActionPane: ActionPane(
           motion: const ScrollMotion(),
           children: [
             SlidableAction(
-              // An action can be bigger than the others.
               flex: 2,
-              onPressed: deleteUserMethod,
+              onPressed: (context){
+                apiMethode.deleteUser(id: widget.user!.id.toString());
+              },
               backgroundColor: AppColor.successColor,
               foregroundColor: AppColor.whiteColor,
               icon: Icons.delete,
@@ -81,50 +83,58 @@ class _CustomSlidableWidgetState extends State<CustomSlidableWidget> {
           ],
         ),
 
-        // The child of the Slidable is what the user sees when the
-        // component is not dragged.
+        /// The child of the Slidable is what the user sees when the
+        /// component is not dragged.
         child: ListTile(
           leading: Row(
             mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            // crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SvgPicture.asset(
-                AppIcons.userAvatarIcon,
-                height: 35,
-                width: 40,
-              ),
+             Text(widget.user!.id.toString(),),
               const SizedBox(
-                width: 30,
+                width: 20,
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(name, textAlign: TextAlign.start),
+                  Row(
+                    children: [
+                      Text(widget.user!.name!, textAlign: TextAlign.start),
+                      Container(
+                        padding: const EdgeInsets.only(
+                          left: 50,
+                        ),
+                        child: Text(
+                          widget.user!.gender!,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                   Text(
-                    widget.user!.gender!,
-                  )
+                    widget.user!.email!,
+                  ),
                 ],
               ),
-              const SizedBox(
-                width: 30,
-              ),
-              Container(
-                padding: const EdgeInsets.only(left: 20,),
-                child: Text(
-                  email,
-                ),
-              ),
-              const SizedBox(
-                width: 40,
-              ),
-              IconButton(padding: const EdgeInsets.only(left: 50,),
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.circle,
-                  color: AppColor.successColor,
-                ),
-              ),
+              // Container(
+              //   padding: const EdgeInsets.only(left: 20,),
+              //   child: Text(
+              //     email,
+              //   ),
+              // ),
+              // const SizedBox(
+              //   width: 40,
+              // ),
+              // IconButton(padding: const EdgeInsets.only(left: 50,),
+              //   onPressed: () {},
+              //   icon: const Icon(
+              //     Icons.circle,
+              //     color: AppColor.successColor,
+              //   ),
+              // ),
             ],
           ),
           // title: Text(
@@ -137,10 +147,3 @@ class _CustomSlidableWidgetState extends State<CustomSlidableWidget> {
   }
 }
 
-void newUserMethod(BuildContext context) {
-  Get.toNamed(addUserRoute);
-}
-
-void deleteUserMethod(BuildContext context) {
-  Get.delete();
-}

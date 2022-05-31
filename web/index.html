@@ -36,25 +36,25 @@
 
 <script>
       // Your web app's Firebase configuration
-      const firebaseConfig = {
-  apiKey: "AIzaSyCDag1eXU0QRDMhmh_xHruzJAygvY4mnkE",
-  authDomain: "getx-demo-58e1c.firebaseapp.com",
-  databaseURL: "https://getx-demo-58e1c-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "getx-demo-58e1c",
-  storageBucket: "getx-demo-58e1c.appspot.com",
-  messagingSenderId: "26016724142",
-  appId: "1:26016724142:web:058160bdcedb91fde8e93f",
-  measurementId: "G-16YVTX78MQ"
-};
+      var firebaseConfig = {
+        apiKey: 'AIzaSyCDag1eXU0QRDMhmh_xHruzJAygvY4mnkE',
+        authDomain: 'getx-demo-58e1c.firebaseapp.com',
+        databaseURL: 'https://getx-demo-58e1c-default-rtdb.asia-southeast1.firebasedatabase.app',
+        projectId: 'getx-demo-58e1c',
+        storageBucket: 'getx-demo-58e1c.appspot.com',
+        messagingSenderId: '26016724142',
+        appId: '1:26016724142:web:058160bdcedb91fde8e93f',
+        measurementId: "G-16YVTX78MQ"
+      };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-
-
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig)
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
 
 </script>
 <!-- END OF FIREBASE INIT CODE -->
+
 
   <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:

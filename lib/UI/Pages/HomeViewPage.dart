@@ -19,13 +19,16 @@ class HomeViewPage extends StatefulWidget {
 
 class _HomeViewPageState extends State<HomeViewPage> with BaseCommonWidget {
   final HomeController homeController = Get.put(HomeController());
-  final APIService apiService = Get.put(APIService());
+  // final APIService apiService = Get.put(APIService());
   late User user;
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder(
       init: homeController,
+      initState: (state) async{
+        await homeController.getUser();
+      },
       builder: (HomeController controller) {
         return LayoutBuilder(
           builder: (context, constraints) {
@@ -85,12 +88,13 @@ class _HomeViewPageState extends State<HomeViewPage> with BaseCommonWidget {
       },
       child: SingleChildScrollView(
         child: Column(
-          children: [
+          children: <Widget> [
             SizedBox(
               // color: AppColor.whiteColor,
-              height: 500,
+              height: 1000,
+              width: 500,
               child: ListView.builder(
-                itemCount: controller.list.length,
+                itemCount: controller.usersList.length,
                 padding: const EdgeInsets.only(
                   // left: 20,
                   // right: 20,
@@ -105,16 +109,12 @@ class _HomeViewPageState extends State<HomeViewPage> with BaseCommonWidget {
                           top: 20,
                           bottom: 20,
                         ),
-                        child: CustomSlidableWidget(user: controller.list[index]),
+                        child: CustomSlidableWidget(user: controller.usersList[index]),
                       ),
                     ],
                   );
                 },
               ),
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.add),
             ),
           ],
         ),

@@ -2,9 +2,10 @@ import 'package:demo_template/Constants/Enums/Input_border.dart';
 import 'package:demo_template/Constants/Localizations/AppText.dart';
 import 'package:demo_template/Constants/PrefKeys.dart';
 import 'package:demo_template/Controller/AddUserController.dart';
+import 'package:demo_template/Controller/HomeController.dart';
 import 'package:demo_template/DataHandler/Local/SharedPrefs.dart';
-import 'package:demo_template/Models/APIs/APIService.dart';
 import 'package:demo_template/Models/User.dart';
+import 'package:demo_template/Routing/RouteNames.dart';
 import 'package:demo_template/UI/Styling/AppColors.dart';
 import 'package:demo_template/UI/Styling/AppIcons.dart';
 import 'package:demo_template/UI/Styling/SizeConfig.dart';
@@ -13,14 +14,15 @@ import 'package:demo_template/UI/Widgets/AppTextField.dart';
 import 'package:demo_template/UI/Widgets/BaseCommonWidget.dart';
 import 'package:demo_template/UI/Widgets/CustomDropdownWidget.dart';
 import 'package:demo_template/Util/Common.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
 class AddUserPage extends StatefulWidget {
-  final User? user;
-
-  const AddUserPage({Key? key, this.user}) : super(key: key);
+  const AddUserPage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<AddUserPage> createState() => _AddUserPageState();
@@ -28,15 +30,17 @@ class AddUserPage extends StatefulWidget {
 
 class _AddUserPageState extends State<AddUserPage> with BaseCommonWidget {
   /// initialise login controller
-  final AddUserController loginController = Get.put(AddUserController());
-  User? user;
+  final AddUserController addUserController = Get.put(AddUserController());
+  late User? user;
+  String? chooseGender = "";
+
 
   // /// phone number text field focus
   // FocusNode phoneFocus = FocusNode();
   @override
   Widget build(BuildContext context) {
     return GetBuilder(
-      init: loginController,
+      init: addUserController,
       builder: (AddUserController controller) {
         return LayoutBuilder(
           builder: (context, constraints) {
@@ -171,12 +175,23 @@ class _AddUserPageState extends State<AddUserPage> with BaseCommonWidget {
                 right: 50,
                 bottom: 20,
               ),
+
               child: AppButton(
-                onTap: () async{
-                 await APIService.postUser();
-                 // if(statusCode == 200){
-                   Navigator.of(context).pop(true);
-                 // }
+                onTap: () async {
+                  Response response = addUserController.addUser(
+                    controller.userNameController.text,
+                    controller.emailController.text,
+                    chooseGender!,
+                  );
+                    const SnackBar(
+                      content: Text("User Added Successfully"),
+                    );
+                    if (kDebugMode) {
+                      print("response>>>>> $response");
+                    }
+                    controller.emailController.clear();
+                    controller.userNameController.clear();
+                    chooseGender;
                 },
                 title: addUser,
               ),
