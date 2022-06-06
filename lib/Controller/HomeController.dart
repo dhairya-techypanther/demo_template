@@ -1,6 +1,6 @@
-import 'dart:convert';
 
 import 'package:demo_template/Controller/BaseController.dart';
+import 'package:demo_template/Models/APIs/APIService.dart';
 import 'package:demo_template/Models/User.dart';
 import 'package:dio/dio.dart' as DIO;
 import 'package:dio/dio.dart';
@@ -8,23 +8,17 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import '../Models/APIs/APIService.dart';
 
 class HomeController extends BaseController {
   var googleAccount = Rx<GoogleSignInAccount?>(null);
   APIService apiService = APIService();
   List<User> usersList = [];
   static DIO.Dio dio = Dio();
-  // static final users = User().obs;
 
-
-  static get baseUrl => APIService.baseUrl;
-
+  static get baseUrl => APIService.url;
   static get token => APIService.token;
 
-  void onInIt() async {
-    super.onInit();
-  }
+  void onInIt() async {super.onInit();}
 
 
   // static addUser(String name, String email, String gender,) async {

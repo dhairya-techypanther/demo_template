@@ -1,12 +1,12 @@
 import 'package:demo_template/Constants/Localizations/AppText.dart';
 import 'package:demo_template/Controller/HomeController.dart';
-import 'package:demo_template/Models/APIs/APIService.dart';
 import 'package:demo_template/Models/User.dart';
 import 'package:demo_template/Routing/RouteNames.dart';
 import 'package:demo_template/UI/Styling/AppColors.dart';
 import 'package:demo_template/UI/Styling/SizeConfig.dart';
 import 'package:demo_template/UI/Widgets/BaseCommonWidget.dart';
 import 'package:demo_template/UI/Widgets/CustomSliderWidget.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -19,15 +19,17 @@ class HomeViewPage extends StatefulWidget {
 
 class _HomeViewPageState extends State<HomeViewPage> with BaseCommonWidget {
   final HomeController homeController = Get.put(HomeController());
+
   // final APIService apiService = Get.put(APIService());
-  late User user;
+  User? user;
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder(
       init: homeController,
-      initState: (state) async{
+      initState: (state) async {
         await homeController.getUser();
+        // user;
       },
       builder: (HomeController controller) {
         return LayoutBuilder(
@@ -56,6 +58,9 @@ class _HomeViewPageState extends State<HomeViewPage> with BaseCommonWidget {
 
                   if (data == true) {
                     user;
+                  }
+                  if (kDebugMode) {
+                    print("$data");
                   }
                 },
                 child: const Icon(
@@ -88,7 +93,7 @@ class _HomeViewPageState extends State<HomeViewPage> with BaseCommonWidget {
       },
       child: SingleChildScrollView(
         child: Column(
-          children: <Widget> [
+          children: <Widget>[
             SizedBox(
               // color: AppColor.whiteColor,
               height: 1000,
@@ -109,7 +114,9 @@ class _HomeViewPageState extends State<HomeViewPage> with BaseCommonWidget {
                           top: 20,
                           bottom: 20,
                         ),
-                        child: CustomSlidableWidget(user: controller.usersList[index]),
+                        child: CustomSlidableWidget(
+                          user: controller.usersList[index],
+                        ),
                       ),
                     ],
                   );

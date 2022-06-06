@@ -2,10 +2,8 @@ import 'package:demo_template/Constants/Enums/Input_border.dart';
 import 'package:demo_template/Constants/Localizations/AppText.dart';
 import 'package:demo_template/Constants/PrefKeys.dart';
 import 'package:demo_template/Controller/AddUserController.dart';
-import 'package:demo_template/Controller/HomeController.dart';
 import 'package:demo_template/DataHandler/Local/SharedPrefs.dart';
 import 'package:demo_template/Models/User.dart';
-import 'package:demo_template/Routing/RouteNames.dart';
 import 'package:demo_template/UI/Styling/AppColors.dart';
 import 'package:demo_template/UI/Styling/AppIcons.dart';
 import 'package:demo_template/UI/Styling/SizeConfig.dart';
@@ -31,16 +29,17 @@ class AddUserPage extends StatefulWidget {
 class _AddUserPageState extends State<AddUserPage> with BaseCommonWidget {
   /// initialise login controller
   final AddUserController addUserController = Get.put(AddUserController());
-  late User? user;
+  User? user;
   String? chooseGender = "";
 
-
-  // /// phone number text field focus
-  // FocusNode phoneFocus = FocusNode();
   @override
   Widget build(BuildContext context) {
     return GetBuilder(
       init: addUserController,
+      initState: (state) async {
+        await addUserController.addUser(name, email, gender);
+        user;
+      },
       builder: (AddUserController controller) {
         return LayoutBuilder(
           builder: (context, constraints) {
@@ -82,11 +81,14 @@ class _AddUserPageState extends State<AddUserPage> with BaseCommonWidget {
           children: <Widget>[
             /// User Lottie Image
             Container(
+              padding: const EdgeInsets.only(
+                left: 500,
+              ),
               child: Lottie.asset(
                 AppIcons.userIcon,
-                fit: BoxFit.fill,
-                width: 150,
-                height: 250,
+                fit: BoxFit.fitHeight,
+                width: (kIsWeb) ? 80 : 150,
+                height: (kIsWeb) ? 300 : 250,
               ),
             ),
 
@@ -175,23 +177,28 @@ class _AddUserPageState extends State<AddUserPage> with BaseCommonWidget {
                 right: 50,
                 bottom: 20,
               ),
-
               child: AppButton(
                 onTap: () async {
                   Response response = addUserController.addUser(
                     controller.userNameController.text,
                     controller.emailController.text,
-                    chooseGender!,
-                  );
+                    user!.gender.toString(),
+                  ) as Response;
+                  if (response.statusCode == 200) {
                     const SnackBar(
                       content: Text("User Added Successfully"),
                     );
-                    if (kDebugMode) {
-                      print("response>>>>> $response");
-                    }
-                    controller.emailController.clear();
-                    controller.userNameController.clear();
-                    chooseGender;
+                  }
+                  if (kDebugMode) {
+                    print("response>>>>> $response");
+                  }
+                  controller.emailController.clear();
+                  controller.userNameController.clear();
+                  // user!.gender;
+                  return const CircularProgressIndicator(
+                    color: AppColor.errorColor,
+                    backgroundColor: AppColor.successColor,strokeWidth: 2,
+                  );
                 },
                 title: addUser,
               ),

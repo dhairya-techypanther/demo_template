@@ -19,28 +19,27 @@ void main() async {
       print('--- main: Firebase.initializeApp ---');
     }
   } else {
-  Firebase.initializeApp(
-  options: const FirebaseOptions(
-  apiKey: "AIzaSyCDag1eXU0QRDMhmh_xHruzJAygvY4mnkE",
-  authDomain: "getx-demo-58e1c.firebaseapp.com",
-  databaseURL: "https://getx-demo-58e1c-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "getx-demo-58e1c",
-  storageBucket: "getx-demo-58e1c.appspot.com",
-  messagingSenderId: "26016724142",
-  appId: "1:26016724142:web:058160bdcedb91fde8e93f",
-  measurementId: "G-16YVTX78MQ"
-  )
-  ,
-  );
-  await Firebase.initializeApp();
-  await APIService.init();
+    Firebase.initializeApp(
+      options: const FirebaseOptions(
+          apiKey: "AIzaSyCDag1eXU0QRDMhmh_xHruzJAygvY4mnkE",
+          authDomain: "getx-demo-58e1c.firebaseapp.com",
+          databaseURL:
+              "https://getx-demo-58e1c-default-rtdb.asia-southeast1.firebasedatabase.app",
+          projectId: "getx-demo-58e1c",
+          storageBucket: "getx-demo-58e1c.appspot.com",
+          messagingSenderId: "26016724142",
+          appId: "1:26016724142:web:058160bdcedb91fde8e93f",
+          measurementId: "G-16YVTX78MQ"),
+    );
+    await Firebase.initializeApp();
+    await APIService.init();
 
-  runApp(
-  const MyApp(
-  defaultRoute: loginViewRoute,
-  ),
-  );
-}
+    runApp(
+      const MyApp(
+        defaultRoute: loginViewRoute,
+      ),
+    );
+  }
 }
 
 class MyHttpOverrides extends HttpOverrides {

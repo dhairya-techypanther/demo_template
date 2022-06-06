@@ -4,12 +4,12 @@ import 'package:demo_template/Controller/BaseController.dart';
 import 'package:demo_template/Models/APIs/APIService.dart';
 import 'package:demo_template/Models/User.dart';
 import 'package:demo_template/Routing/RouteNames.dart';
+import 'package:demo_template/Util/Common.dart';
 import 'package:dio/dio.dart';
+import 'package:dio/dio.dart' as DIO;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart' as DIO;
 import 'package:get/get.dart';
-
 
 class AddUserController extends BaseController {
   TextEditingController userNameController = TextEditingController();
@@ -26,24 +26,26 @@ class AddUserController extends BaseController {
   FocusNode emailFocus = FocusNode();
   static final users = User().obs;
 
-
-  static get baseUrl => APIService.baseUrl;
-
+  static get baseUrl => APIService.url;
   static get token => APIService.token;
 
-  addUser(String name, String email, String gender,) async {
+  Future addUser(
+    String name,
+    String email,
+    String gender,
+  ) async {
     // Perform POST request to the endpoint "/users/<id>"
     if (kDebugMode) {
-      print("addUser name $name email $email gender $gender");
+      print("addedUser name $name email $email gender $gender");
     }
-    List<User> data = [];
+    // List<User> data = [];
     final response = await dio.post(
       baseUrl,
       data: {
         // "id": 10659,
-        "name": "$name",
-        "email": "$email",
-        "gender": "$gender",
+        "name": name,
+        "email": email,
+        "gender": gender,
         // "status": "active"
       },
       options: Options(
@@ -57,27 +59,25 @@ class AddUserController extends BaseController {
       ),
     );
     if (response != null && response.data != null) {
-      print("response.statusCode == 200  ${response.statusCode == 200} ${response.statusCode}");
+      if (kDebugMode) {
+        print(
+            "response.statusCode == 200  ${response.statusCode == 200} ${response.statusCode}");
+      }
+    } else {
+      CommonUtils.customSnackBar(content: "user is not added");
     }
     if (kDebugMode) {
       print("This is response >>>>>> $response");
     }
-    // if (kDebugMode) {
-    //   print("bearer token ${response.statusCode}");
-    // }
-    //
-    // // Prints the raw data returned by the server
-    // if (response.statusCode == 200) {
-    //   data = PostData.fromJsonArray(response.data['data']);
-    // }
     users.value = User.fromJson(
       json.decode(response.data),
     );
-    // return data;
+    return response;
   }
 
   Future<List<User>> getUser() async {
-    // Perform GET request to the endpoint "/users/<id>"
+    /// Perform GET request to the endpoint "/users/<id>"
+
     List<User> data = [];
     DIO.Response response = await dio.get(
       baseUrl,
@@ -106,5 +106,4 @@ class AddUserController extends BaseController {
   void deleteUserMethod(BuildContext context) {
     Get.delete();
   }
-
 }

@@ -1,13 +1,13 @@
 import 'package:demo_template/Models/User.dart';
 import 'package:demo_template/UI/Styling/AppColors.dart';
 import 'package:demo_template/UI/Styling/AppThemes.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class CustomDropdownWidget extends StatefulWidget {
-  final User? user;
 
   const CustomDropdownWidget({
-    Key? key, this.user,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -17,7 +17,8 @@ class CustomDropdownWidget extends StatefulWidget {
 class _CustomDropdownWidgetState extends State<CustomDropdownWidget> {
   String gender = "";
   String? hintText;
-  late User user;
+  User? user;
+
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +33,7 @@ class _CustomDropdownWidgetState extends State<CustomDropdownWidget> {
             .toList(),
         onChanged: (value) {
           if (value != null) {
-            setState(() {
-              user.gender = value as String;
-            });
+              user!.gender = value as String;
           }
         },
         decoration: InputDecoration(
@@ -43,7 +42,7 @@ class _CustomDropdownWidgetState extends State<CustomDropdownWidget> {
           // ),
           hintText: "Select Gender",
           hintStyle: AppTheme.textStyle100(
-            fontSize: 16,
+            fontSize: (kIsWeb) ?6 : 16,
             textColor: AppColor.blackColor,
           ),
           border: const OutlineInputBorder(),

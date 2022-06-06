@@ -1,9 +1,9 @@
 import 'package:demo_template/Constants/Localizations/AppText.dart';
 import 'package:demo_template/Controller/AddUserController.dart';
-import 'package:demo_template/Controller/HomeController.dart';
 import 'package:demo_template/Models/APIs/APIMethode.dart';
 import 'package:demo_template/Models/User.dart';
 import 'package:demo_template/UI/Styling/AppColors.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
@@ -23,9 +23,9 @@ class CustomSlidableWidget extends StatefulWidget {
 }
 
 class _CustomSlidableWidgetState extends State<CustomSlidableWidget> {
-
   final AddUserController addUserController = Get.put(AddUserController());
   final APIMethode apiMethode = APIMethode();
+
   @override
   void initState() {
     addUserController.addUser(name, email, gender);
@@ -72,8 +72,14 @@ class _CustomSlidableWidgetState extends State<CustomSlidableWidget> {
           children: [
             SlidableAction(
               flex: 2,
-              onPressed: (context){
-                apiMethode.deleteUser(id: widget.user!.id.toString());
+              onPressed: (context) {
+                var val = apiMethode.deleteUser(
+                  id: widget.user!.id!.toString(),
+                );
+                if (kDebugMode) {
+                  print("$val");
+                }
+                Navigator.of(context);
               },
               backgroundColor: AppColor.successColor,
               foregroundColor: AppColor.whiteColor,
@@ -83,14 +89,15 @@ class _CustomSlidableWidgetState extends State<CustomSlidableWidget> {
           ],
         ),
 
-        /// The child of the Slidable is what the user sees when the
-        /// component is not dragged.
+        /// The child of the Slidable is what the user sees when the component is not dragged.
         child: ListTile(
           leading: Row(
             mainAxisSize: MainAxisSize.min,
             // crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-             Text(widget.user!.id.toString(),),
+              Text(
+                widget.user!.id.toString(),
+              ),
               const SizedBox(
                 width: 20,
               ),
@@ -100,7 +107,10 @@ class _CustomSlidableWidgetState extends State<CustomSlidableWidget> {
                 children: [
                   Row(
                     children: [
-                      Text(widget.user!.name!, textAlign: TextAlign.start),
+                      Text(
+                        widget.user!.name!,
+                        textAlign: TextAlign.start,
+                      ),
                       Container(
                         padding: const EdgeInsets.only(
                           left: 50,
@@ -146,4 +156,3 @@ class _CustomSlidableWidgetState extends State<CustomSlidableWidget> {
     );
   }
 }
-

@@ -17,7 +17,7 @@ class APIMethode {
   static final users = User().obs;
 
 
-  static get baseUrl => APIService.baseUrl;
+  static get baseUrl => APIService.url;
 
   static get token => APIService.token;
 
